@@ -35,6 +35,15 @@ public class AlbumView{
 
     @FXML
     TilePane tilePane;
+    @FXML
+    Button deleteButton;
+    @FXML
+    Button addButton;
+    @FXML
+    Button backButton;
+
+
+    //if add and delete are called, that means AlbumList was updated and should be overwritten
 
     public AlbumView(String fileName) throws IOException
     {
@@ -46,20 +55,6 @@ public class AlbumView{
         return this.scene;
     }
 
-    public ImageView createImageView(final File imageFile){
-        ImageView imageView = null;
-        try{
-            final Image image = new Image(new FileInputStream(imageFile), 150, 0, true,
-                    true);
-            imageView = new ImageView(image);
-            imageView.setFitWidth(150);
-
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }
-
-        return imageView;
-    }
 
     private Parent initializeFxmlResource(String fileName)
             throws IOException
