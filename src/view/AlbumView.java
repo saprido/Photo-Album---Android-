@@ -7,9 +7,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
@@ -17,6 +19,8 @@ import model.Album;
 import model.Photo;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class AlbumView{
@@ -42,19 +46,31 @@ public class AlbumView{
         return this.scene;
     }
 
+    public ImageView createImageView(final File imageFile){
+        ImageView imageView = null;
+        try{
+            final Image image = new Image(new FileInputStream(imageFile), 150, 0, true,
+                    true);
+            imageView = new ImageView(image);
+            imageView.setFitWidth(150);
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+
+        return imageView;
+    }
+
     private Parent initializeFxmlResource(String fileName)
             throws IOException
     {
 
-
-        String path = "/home/ubuntu/eclipse with liferay/Desktop/imagetest/";
-
-        File folder = new File(path);
-        File[] listOfFiles = folder.listFiles();
-
-        for (final File file : listOfFiles) {
-            ImageView imageView = new ImageView(file);
-            tilePane.getChildren().addAll(new Button().setGraphic(imageView));
+        for (Photo photo : albumPhotos) {
+            Node node = new ImageView(photo.getPhoto());
+            Button button = new Button();
+            button.setText(String.valueOf(photo.getPhotoId()));
+            button.setGraphic(node);
+            tilePane.getChildren().addAll(button);
         }
 
 

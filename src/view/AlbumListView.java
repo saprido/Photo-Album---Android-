@@ -1,6 +1,6 @@
 package view;
 
-import java.io.IOException;
+import java.io.*;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,7 +17,7 @@ public class AlbumListView
 	private Scene scene;
 	
 	//The list of albums
-	private final ObservableList<Album> albums = 
+	private ObservableList<Album> albums =
 			          FXCollections.observableArrayList();
 		
 	@FXML
@@ -27,9 +27,15 @@ public class AlbumListView
 	@FXML
 	Button renameButton;
 	
-	public AlbumListView(String fileName) throws IOException
+	public AlbumListView(String fileName, String fileData) throws IOException
 	{
+		ObjectInputStream is = new ObjectInputStream(new FileInputStream(fileData));
 		this.scene = new Scene(initializeFxmlResource(fileName));
+		try {
+			this.albums = (ObservableList<Album>) is.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public Scene getScene()
@@ -40,6 +46,10 @@ public class AlbumListView
 	private Parent initializeFxmlResource(String fileName)
 	throws IOException
 	{
+
+
+
+
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(fileName));
 		loader.setController(this);
 		Parent root = (Parent) loader.load();

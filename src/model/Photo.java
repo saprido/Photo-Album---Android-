@@ -37,4 +37,7 @@ public class Photo{
     public void setDate(Date date) {
         this.date = date;
     }
+    public int getPhotoId(){
+        return this.photoId;
+    }
 }
