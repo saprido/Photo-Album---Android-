@@ -7,7 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import util.FileHandler;
-import view.AlbumView;
+import view.AlbumListView;
 import view.LoginView;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -21,7 +21,7 @@ public class Main extends Application
 	private static String loginViewFileName = "LoginView.fxml";
 	private static String albumViewFileName = "AlbumView.fxml";
 	private LoginView loginView;
-	private AlbumView albumView; 
+	private AlbumListView albumView;
 	
 	@Override
 	public void start(Stage primaryStage) 
@@ -31,7 +31,7 @@ public class Main extends Application
 			this.primaryStage = primaryStage;
 			
 			this.loginView = new LoginView(loginViewFileName);
-			this.albumView = new AlbumView(albumViewFileName);
+			this.albumView = new AlbumListView(albumViewFileName);
 			
 			addClickHandlerForLoginView();
 			
