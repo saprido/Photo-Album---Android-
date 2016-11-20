@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import util.FileHandler;
+import view.AlbumListView;
 import view.AlbumView;
 import view.AlbumView;
 import view.LoginView;
@@ -28,7 +29,7 @@ public class Main extends Application implements Serializable
 	private static String albumListViewFileName = "AlbumListView.fxml";
     private static String albumViewFileName = "AlbumView.fxml";
 	private LoginView loginView;
-	//private AlbumListView albumListView;
+	private AlbumListView albumListView;
     private AlbumView albumView;
 	
 	@Override
