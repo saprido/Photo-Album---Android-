@@ -6,9 +6,9 @@ import java.util.List;
 
 public class Album implements Serializable {
 
+    public String name;
+
     public List<Photo> photos;
-    
-    private String name;
 
     public Album(String name) {
         this.photos = new ArrayList<Photo>();
@@ -24,6 +24,12 @@ public class Album implements Serializable {
     {
     	return this.name + "\n" + "Naseer " + "\n" + "Hello world";
     }
+
+    public void setName(String s){
+        this.name = s;
+    }
+
+
 
 
 

@@ -41,6 +41,8 @@ public class AlbumView{
 
     private Album album;
     
+    private AlbumListView albumListView;
+    
     //The list of albums
     private final ObservableList<Photo> photos =
             FXCollections.observableArrayList();
@@ -119,20 +121,6 @@ public class AlbumView{
     public Scene getScene()
     {
         return this.scene;
-    }
-
-    public void addClickHandlerToAddButton(EventHandler<ActionEvent> eventHandler)
-    {
-        //this.addButton.setOnAction();
-    }
-
-    public void addClickHandlerToDeleteButton(EventHandler<ActionEvent> eventHandler)
-    {
-        this.deleteButton.setOnAction(eventHandler);
-    }
-
-    public void addClickHandlerToBackButton(EventHandler<ActionEvent> eventHandler){
-        this.backButton.setOnAction(eventHandler);
     }
 
     private Parent initializeFxmlResource(String fileName)
