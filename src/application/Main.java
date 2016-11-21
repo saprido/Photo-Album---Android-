@@ -1,7 +1,6 @@
 package application;
 	
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import javafx.application.Application;
@@ -13,10 +12,8 @@ import util.UserSession;
 import view.AdminView;
 import view.AlbumListView;
 import view.AlbumView;
-import view.AlbumView;
 import view.LoginView;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 
 public class Main extends Application implements Serializable
 {
@@ -30,7 +27,7 @@ public class Main extends Application implements Serializable
     private static String adminViewFileName = "AdminView.fxml";
 	private LoginView loginView;
 	private AlbumListView albumListView;
-    private AlbumView albumView;
+    private AlbumView albumView; //TODO: initialize + add click handlers
     private AdminView adminView;
 	
 	@Override
@@ -42,8 +39,8 @@ public class Main extends Application implements Serializable
 			this.primaryStage = primaryStage;
 			
 			this.loginView = new LoginView(loginViewFileName);
-			this.albumListView = new AlbumListView(albumListViewFileName);
-            //this.albumView = new AlbumView(albumViewFileName);
+			this.albumView = new AlbumView(albumViewFileName);
+			this.albumListView = new AlbumListView(albumListViewFileName, albumView, primaryStage);
 			this.adminView = new AdminView(adminViewFileName);
 			
 			addClickHandlerForLoginView();
@@ -66,7 +63,7 @@ public class Main extends Application implements Serializable
 			{
 				if (loginView.getUsername().equals("admin"))
 				{
-					switchToAdminView();
+					switchToView(adminView.getScene());
 				} 
 				else 
 				{
@@ -75,7 +72,7 @@ public class Main extends Application implements Serializable
 					try {
 						if (userExists())
 						{
-							switchToAlbumListView();
+							switchToView(albumListView.getScene());
 						}
 					} catch (IOException e1) {
 						e1.printStackTrace();
@@ -86,14 +83,9 @@ public class Main extends Application implements Serializable
 		});
 	}
 	
-	public void switchToAlbumListView()
+	public void switchToView(Scene scene)
 	{
-		this.primaryStage.setScene(this.albumListView.getScene());
-	}
-	
-	public void switchToAdminView()
-	{
-		this.primaryStage.setScene(this.adminView.getScene());
+		this.primaryStage.setScene(scene);
 	}
 	
 	private boolean userExists() throws IOException

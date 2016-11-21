@@ -40,10 +40,10 @@ public class AlbumView{
     private Scene scene;
 
     private Album album;
+    
     //The list of albums
-
-    private final ObservableList<Photo> albumPhotos =
-            FXCollections.observableArrayList(album.photos);
+    private final ObservableList<Photo> photos =
+            FXCollections.observableArrayList();
 
     @FXML
     TilePane tilePane;
@@ -59,10 +59,13 @@ public class AlbumView{
 
     public AlbumView(String fileName) throws IOException
     {
-
         this.scene = new Scene(initializeFxmlResource(fileName));
     }
-
+    
+    public void setAlbum(Album album)
+    {
+    	this.album = album;
+    }
 
     private ImageView createImageView(final File imageFile) {
         // Possibility:
@@ -120,7 +123,7 @@ public class AlbumView{
 
     public void addClickHandlerToAddButton(EventHandler<ActionEvent> eventHandler)
     {
-        this.addButton.setOnAction(eventHandler);
+        //this.addButton.setOnAction();
     }
 
     public void addClickHandlerToDeleteButton(EventHandler<ActionEvent> eventHandler)
@@ -136,8 +139,8 @@ public class AlbumView{
             throws IOException
     {
 
-        if(albumPhotos.size()>0) {
-            for (Photo photo : albumPhotos) {
+        if(this.photos != null) {
+            for (Photo photo : this.photos) {
                 Node node = new ImageView(photo.getPhoto());
                 Button button = new Button();
                 button.setText(String.valueOf(photo.getPhotoId()));
