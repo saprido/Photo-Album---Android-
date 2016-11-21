@@ -70,23 +70,39 @@ public class AdminView
 			@Override
 			public void handle(ActionEvent e) 
 			{
-				users.add(usernameTextField.getText());
+				String username = usernameTextField.getText();
+				users.add(username);
 				addButton.setVisible(false);
 				usernameTextField.setVisible(false);
 				usernameTextField.setText("");
 				usernameListView.setItems(users);
-				//TODO: create a new file for the user (this will store the AlbumList)
-				//TODO: write the username to the usernames.txt file
+				try
+				{
+					FileHandler.addUsername(username);
+					FileHandler.createUserFile(username);
+				} 
+				catch (IOException e1) 
+				{
+					e1.printStackTrace();
+				}
 			}
 		});
 		this.deleteUserButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) 
 			{
-				//Remove from users the selected username
-				//set listview as items again so that we can see the update
-				//TODO: delete the file for the user (the ones that stores the AlbumList)
-				//TODO: remove the username from the usernames.txt file, just rewrite usernames.txt file
+				String username = usernameListView.getSelectionModel().getSelectedItem();
+				users.remove(username);
+				usernameListView.setItems(users);
+				try
+				{
+					FileHandler.deleteUsername(username);
+					FileHandler.deleteUserFile(username);
+				} 
+				catch (IOException e1) 
+				{
+					e1.printStackTrace();
+				}
 			}
 		});
 	}

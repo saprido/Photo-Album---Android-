@@ -32,7 +32,7 @@ public class AlbumView{
     //The list of albums
     private final ObservableList<Photo> albumPhotos =
             FXCollections.observableArrayList(album.photos);
-
+    
     @FXML
     TilePane tilePane;
     @FXML

@@ -9,6 +9,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import util.FileHandler;
+import util.UserSession;
+import view.AdminView;
 import view.AlbumListView;
 import view.AlbumView;
 import view.AlbumView;
@@ -19,8 +21,6 @@ import javafx.scene.layout.BorderPane;
 public class Main extends Application implements Serializable
 {
 	private Stage primaryStage;
-	
-	private FileHandler fileHandler = new FileHandler("usernames.txt");
 
 
     String filePath = "data.txt";
@@ -28,9 +28,11 @@ public class Main extends Application implements Serializable
 	private static String loginViewFileName = "LoginView.fxml";
 	private static String albumListViewFileName = "AlbumListView.fxml";
     private static String albumViewFileName = "AlbumView.fxml";
+    private static String adminViewFileName = "AdminView.fxml";
 	private LoginView loginView;
 	private AlbumListView albumListView;
     private AlbumView albumView;
+    private AdminView adminView;
 	
 	@Override
 	public void start(Stage primaryStage) 
@@ -41,8 +43,9 @@ public class Main extends Application implements Serializable
 			this.primaryStage = primaryStage;
 			
 			this.loginView = new LoginView(loginViewFileName);
-			this.albumListView = new AlbumListView(albumListViewFileName, filePath);
-            this.albumView = new AlbumView(albumViewFileName);
+			this.albumListView = new AlbumListView(albumListViewFileName);
+            //this.albumView = new AlbumView(albumViewFileName);
+			this.adminView = new AdminView(adminViewFileName);
 			
 			addClickHandlerForLoginView();
 			
@@ -62,25 +65,41 @@ public class Main extends Application implements Serializable
 			@Override
 			public void handle( ActionEvent e) 
 			{
-				try {
-					if (fileHandler.doesUserNameExist(loginView.getUsername()))
-					{
-						switchToAlbumView();
-					} 
-					else 
-					{
-						//TODO: error message
+				if (loginView.getUsername().equals("admin"))
+				{
+					switchToAdminView();
+				} 
+				else 
+				{
+					UserSession.username = loginView.getUsername();
+					//TODO: populate album list with user specific albums
+					try {
+						if (userExists())
+						{
+							switchToAlbumListView();
+						}
+					} catch (IOException e1) {
+						e1.printStackTrace();
 					}
-				} catch (IOException e1) {
-					e1.printStackTrace();
+					//TODO: error message if username doesn't exist
 				}
 			}
 		});
 	}
 	
-	public void switchToAlbumView()
+	public void switchToAlbumListView()
 	{
-		this.primaryStage.setScene(this.albumView.getScene());
+		this.primaryStage.setScene(this.albumListView.getScene());
+	}
+	
+	public void switchToAdminView()
+	{
+		this.primaryStage.setScene(this.adminView.getScene());
+	}
+	
+	private boolean userExists() throws IOException
+	{
+		return FileHandler.doesUserNameExist(UserSession.username);
 	}
 	
 	public static void main(String[] args) 
