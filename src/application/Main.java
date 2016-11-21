@@ -7,6 +7,7 @@ import java.io.Serializable;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import model.Album;
 import util.FileHandler;
@@ -94,7 +95,10 @@ public class Main extends Application implements Serializable
             @Override
             public void handle(ActionEvent event) {
 
-                Album album = new Album("name");
+                TextInputDialog dialog = new TextInputDialog();
+                dialog.setContentText("Enter Album Name");
+                String name = dialog.getDefaultValue();
+                Album album = new Album(name);
                 albumListView.getAlbumList().addAlbum(album);
 
             }
@@ -106,8 +110,16 @@ public class Main extends Application implements Serializable
                 albumListView.deleteSelectedAlbumFromAlbumList();
             }
         });
+
+        this.albumListView.addClickHandlerToRenameButton(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                albumListView.editSelectedAlbumFromAlbumList();
+            }
+        });
+
     }
-	
+
 	public void switchToAlbumListView()
 	{
 		this.primaryStage.setScene(this.albumListView.getScene());

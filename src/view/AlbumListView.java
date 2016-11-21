@@ -2,6 +2,8 @@ package view;
 
 import java.io.*;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -39,6 +41,7 @@ public class AlbumListView
 	public AlbumListView(String fileName) throws IOException
 	{
 		this.scene = new Scene(initializeFxmlResource(fileName));
+
 	}
 
 	public AlbumList getAlbumList(){
@@ -52,6 +55,13 @@ public class AlbumListView
         this.albumListView.setItems( this.albums);
     }
 
+    public void editSelectedAlbumFromAlbumList()
+    {
+        Album albumDelete = (Album) this.albumListView.getSelectionModel().getSelectedItem();
+        //open inputDialog Box here
+        //update name with setName();
+    }
+
     public void addClickHandlerToAddButton(EventHandler<ActionEvent> eventHandler)
     {
         this.addButton.setOnAction(eventHandler);
@@ -59,6 +69,11 @@ public class AlbumListView
 
 
     public void addClickHandlerToDeleteButton(EventHandler<ActionEvent> eventHandler)
+    {
+        this.addButton.setOnAction(eventHandler);
+    }
+
+    public void addClickHandlerToRenameButton(EventHandler<ActionEvent> eventHandler)
     {
         this.addButton.setOnAction(eventHandler);
     }
