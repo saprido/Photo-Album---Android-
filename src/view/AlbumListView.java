@@ -4,6 +4,8 @@ import java.io.*;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -30,6 +32,9 @@ public class AlbumListView
 	Button renameButton;
 
 
+    public ObservableList<Album> getAlbums(){
+        return this.albums;
+    }
 
     //when you add an album, you need to add it to data.txt using output serializable;
 	//When you click an Album from the list, send the refrence so you can access the photos in albumView.
@@ -47,17 +52,27 @@ public class AlbumListView
             e.printStackTrace();
         }
     }
-	public AlbumListView(String fileName, String fileData) throws IOException
+	public AlbumListView(String fileName) throws IOException
 	{
-		ObjectInputStream is = new ObjectInputStream(new FileInputStream(fileData));
-		this.scene = new Scene(initializeFxmlResource(fileName));
-		try {
-			this.albums = (ObservableList<Album>) is.readObject();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+//		ObjectInputStream is = new ObjectInputStream(new FileInputStream(fileData));
+        this.scene = new Scene(initializeFxmlResource(fileName));
+//		try {
+//			this.albums = (ObservableList<Album>) is.readObject();
+//		} catch (ClassNotFoundException e) {
+//			e.printStackTrace();
+//		}
 	}
-	
+    public void addClickHandlerToAddButton(EventHandler<ActionEvent> eventHandler)
+    {
+        this.addButton.setOnAction(eventHandler);
+    }
+
+    public void addClickHandlerToDeleteButton(EventHandler<ActionEvent> eventHandler)
+    {
+        this.addButton.setOnAction(eventHandler);
+    }
+
+
 	public Scene getScene()
 	{
 		return this.scene;

@@ -31,7 +31,7 @@ public class FileHandler
 		}
 	}
 	
-	public boolean doesUserNameExist(String username) 
+	public static boolean doesUserNameExist(String username)
 	throws IOException
 	{
 		FileReader fileReader = new FileReader(usersFileName);

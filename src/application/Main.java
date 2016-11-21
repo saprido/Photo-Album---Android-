@@ -1,13 +1,18 @@
 package application;
 	
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Optional;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
+import model.Album;
+import model.AlbumList;
 import util.FileHandler;
 import view.AlbumListView;
 import view.AlbumView;
@@ -19,8 +24,6 @@ import javafx.scene.layout.BorderPane;
 public class Main extends Application implements Serializable
 {
 	private Stage primaryStage;
-	
-	private FileHandler fileHandler = new FileHandler("usernames.txt");
 
 
     String filePath = "data.txt";
@@ -31,8 +34,11 @@ public class Main extends Application implements Serializable
 	private LoginView loginView;
 	private AlbumListView albumListView;
     private AlbumView albumView;
-	
-	@Override
+
+    public Main() throws IOException {
+    }
+
+    @Override
 	public void start(Stage primaryStage) 
 	{
 		try 
@@ -41,7 +47,7 @@ public class Main extends Application implements Serializable
 			this.primaryStage = primaryStage;
 			
 			this.loginView = new LoginView(loginViewFileName);
-			this.albumListView = new AlbumListView(albumListViewFileName, filePath);
+			this.albumListView = new AlbumListView(albumListViewFileName);
             this.albumView = new AlbumView(albumViewFileName);
 			
 			addClickHandlerForLoginView();
@@ -63,7 +69,7 @@ public class Main extends Application implements Serializable
 			public void handle( ActionEvent e) 
 			{
 				try {
-					if (fileHandler.doesUserNameExist(loginView.getUsername()))
+					if (FileHandler.doesUserNameExist(loginView.getUsername()))
 					{
 						switchToAlbumView();
 					} 
@@ -77,10 +83,72 @@ public class Main extends Application implements Serializable
 			}
 		});
 	}
+
+
+
+    public void addClickHandlerForAlbumListView()
+    {
+        //Adds a handler for the back button in the add song view
+        this.albumListView.addClickHandlerToAddButton( new EventHandler<ActionEvent>() {
+            @Override
+            public void handle( ActionEvent e)
+            {
+                //add textinput dialog box
+
+
+            }
+        });
+
+        this.albumListView.addClickHandlerToDeleteButton(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //get selected
+                //delete selected from list
+
+            }
+        });
+    }
+
+
+    public void addClickHandlerForAlbumView(){
+
+        this.albumView.addClickHandlerToAddButton( new EventHandler<ActionEvent>() {
+            @Override
+            public void handle( ActionEvent e)
+            {
+
+
+            }
+        });
+
+
+        this.albumView.addClickHandlerToDeleteButton(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        });
+
+
+        this.albumView.addClickHandlerToBackButton(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                switchToAlbumListView();
+            }
+        });
+
+
+    }
+
+
+    public void switchToAlbumView()
+    {
+        this.primaryStage.setScene(this.albumView.getScene());
+    }
 	
-	public void switchToAlbumView()
+	public void switchToAlbumListView()
 	{
-		this.primaryStage.setScene(this.albumView.getScene());
+		this.primaryStage.setScene(this.albumListView.getScene());
 	}
 	
 	public static void main(String[] args) 
