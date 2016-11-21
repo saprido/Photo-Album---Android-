@@ -40,9 +40,9 @@ public class AlbumView{
     private Scene scene;
 
     private Album album;
-    
+
     private AlbumListView albumListView;
-    
+
     //The list of albums
     private final ObservableList<Photo> photos =
             FXCollections.observableArrayList();
@@ -63,10 +63,10 @@ public class AlbumView{
     {
         this.scene = new Scene(initializeFxmlResource(fileName));
     }
-    
+
     public void setAlbum(Album album)
     {
-    	this.album = album;
+        this.album = album;
     }
 
     private ImageView createImageView(final File imageFile) {
@@ -138,7 +138,7 @@ public class AlbumView{
         }
 
 
-       // Possibility:
+        // Possibility:
 //        String path = "/home/ubuntu/eclipse with liferay/Desktop/imagetest/";
 //
 //        File folder = new File(path);
