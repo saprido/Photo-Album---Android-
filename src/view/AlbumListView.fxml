@@ -11,8 +11,8 @@
    <children>
       <Button fx:id="deleteButton" layoutX="27.0" layoutY="443.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="113.0" text="Delete" textFill="#4d0606" />
       <Button fx:id="addButton" layoutX="27.0" layoutY="359.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="113.0" text="Add" textFill="#4d0808" />
-      <ListView fx:id="songListView" layoutX="27.0" layoutY="56.0" prefHeight="282.0" prefWidth="484.0" />
-      <Label fx:id="songListViewTitle" layoutX="201.0" layoutY="24.0" prefHeight="23.0" prefWidth="160.0" text="Your Albums" textFill="#a12d2d">
+      <ListView fx:id="albumListView" layoutX="27.0" layoutY="56.0" prefHeight="282.0" prefWidth="484.0" />
+      <Label fx:id="titleLabel" layoutX="201.0" layoutY="24.0" prefHeight="23.0" prefWidth="160.0" text="Your Albums" textFill="#a12d2d">
          <font>
             <Font name="AppleGothic Regular" size="18.0" />
          </font></Label>

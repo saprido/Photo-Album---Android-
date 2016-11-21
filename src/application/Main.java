@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import model.Album;
 import util.FileHandler;
 import util.UserSession;
 import view.AdminView;
@@ -47,6 +48,7 @@ public class Main extends Application implements Serializable
 			this.adminView = new AdminView(adminViewFileName);
 			
 			addClickHandlerForLoginView();
+            addClickHandlerForAlbumListView();
 			
 			this.primaryStage.setScene(this.loginView.getScene());
 			this.primaryStage.show();
@@ -85,6 +87,26 @@ public class Main extends Application implements Serializable
 			}
 		});
 	}
+
+
+	public void addClickHandlerForAlbumListView(){
+        this.albumListView.addClickHandlerToAddButton(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                Album album = new Album("name");
+                albumListView.getAlbumList().addAlbum(album);
+
+            }
+        });
+
+        this.albumListView.addClickHandlerToDeleteButton(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                albumListView.deleteSelectedAlbumFromAlbumList();
+            }
+        });
+    }
 	
 	public void switchToAlbumListView()
 	{
