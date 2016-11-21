@@ -22,7 +22,6 @@ public class Main extends Application implements Serializable
 {
 	private Stage primaryStage;
 
-
     String filePath = "data.txt";
 
 	private static String loginViewFileName = "LoginView.fxml";

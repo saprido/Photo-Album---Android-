@@ -4,6 +4,8 @@ import java.io.*;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,7 +35,17 @@ public class AlbumListView
 	{
 		this.scene = new Scene(initializeFxmlResource(fileName));
 	}
-	
+    public void addClickHandlerToAddButton(EventHandler<ActionEvent> eventHandler)
+    {
+        this.addButton.setOnAction(eventHandler);
+    }
+
+    public void addClickHandlerToDeleteButton(EventHandler<ActionEvent> eventHandler)
+    {
+        this.addButton.setOnAction(eventHandler);
+    }
+
+
 	public Scene getScene()
 	{
 		return this.scene;
