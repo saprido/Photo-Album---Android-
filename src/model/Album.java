@@ -10,13 +10,19 @@ public class Album implements Serializable {
 
     public List<Photo> photos;
 
-    public Album(String s){
+    public Album(String name) {
         this.photos = new ArrayList<Photo>();
-        this.name = s;
+        this.name = name;
     }
 
     public void addPhoto(Photo photo){
         this.photos.add(photo);
+    }
+
+    @Override
+    public String toString()
+    {
+        return this.name + "\n" + "Naseer " + "\n" + "Hello world";
     }
 
     public void setName(String s){

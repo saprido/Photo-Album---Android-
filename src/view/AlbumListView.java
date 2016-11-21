@@ -2,8 +2,6 @@ package view;
 
 import java.io.*;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,86 +12,114 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import model.Album;
-import model.AlbumList;
+import util.FileHandler;
 
-public class AlbumListView
-{
-	//The scene for this view
-	private Scene scene;
+public class AlbumListView {
+    //The scene for this view
+    private Scene scene;
 
-    private AlbumList albumList;
-	//The list of albums
-	private ObservableList<Album> albums =
-			          FXCollections.observableArrayList(albumList.getAlbums());
+    //The list of albums
+    private ObservableList<Album> albums =
+            FXCollections.observableArrayList();
+
+    private AlbumView albumView;
 
     public boolean called = false;
 
+    private Stage stage;
+
+    @FXML
+    Button deleteButton;
+    @FXML
+    Button addButton;
+    @FXML
+    Button renameButton;
+    @FXML
+    TextField albumTextField;
+    @FXML
+    Button addAlbumButton;
     @FXML
     ListView albumListView;
-	@FXML
-	Button deleteButton;
-	@FXML
-	Button addButton;
-	@FXML
-	Button renameButton;
 
-	public AlbumListView(String fileName) throws IOException
-	{
-		this.scene = new Scene(initializeFxmlResource(fileName));
+    public AlbumListView(String fileName, AlbumView albumView, Stage primaryStage) throws IOException {
+        this.scene = new Scene(initializeFxmlResource(fileName));
+        this.albumTextField.setVisible(false);
+        this.addAlbumButton.setVisible(false);
 
-	}
+        this.albumView = albumView;
+        this.stage = primaryStage;
 
-	public AlbumList getAlbumList(){
-        return this.albumList;
+        addClickHandlers();
     }
 
-    public void deleteSelectedAlbumFromAlbumList()
-    {
-        Album albumDelete = (Album) this.albumListView.getSelectionModel().getSelectedItem();
-        this.albumList.deleteAlbum(albumDelete);
-        this.albumListView.setItems( this.albums);
+    private void addClickHandlers() {
+        addClickHandlerToAddButtons();
+        addClickHandlerToListViewCells();
     }
 
-    public void editSelectedAlbumFromAlbumList()
-    {
-        Album albumDelete = (Album) this.albumListView.getSelectionModel().getSelectedItem();
-        //open inputDialog Box here
-        //update name with setName();
-    }
-
-    public void addClickHandlerToAddButton(EventHandler<ActionEvent> eventHandler)
-    {
+    public void addClickHandlerToDeleteButton(EventHandler<ActionEvent> eventHandler) {
         this.addButton.setOnAction(eventHandler);
     }
 
 
-    public void addClickHandlerToDeleteButton(EventHandler<ActionEvent> eventHandler)
-    {
-        this.addButton.setOnAction(eventHandler);
+    public Scene getScene() {
+        return this.scene;
     }
 
-    public void addClickHandlerToRenameButton(EventHandler<ActionEvent> eventHandler)
-    {
-        this.addButton.setOnAction(eventHandler);
+    private void addClickHandlerToAddButtons() {
+        this.addButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                addButton.setVisible(false);
+                albumTextField.setVisible(true);
+                addAlbumButton.setVisible(true);
+            }
+        });
+        this.addAlbumButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                String albumName = albumTextField.getText();
+                //UI changes
+                albumListView.setItems(albums);
+                addButton.setVisible(true);
+                albumTextField.setVisible(false);
+                addAlbumButton.setVisible(false);
+                if (albumName.equals("")) return;
+                Album album = new Album(albumTextField.getText());
+                albums.add(album);
+                albumTextField.setText("");
+            }
+        });
     }
 
-	public Scene getScene()
-	{
-		return this.scene;
-	}
-	
-	private Parent initializeFxmlResource(String fileName)
-	throws IOException
-	{
+    private void addClickHandlerToListViewCells() {
+        this.albumListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent click) {
+                //Double click
+                if (click.getClickCount() == 2) {
+                    Album album = (Album) albumListView.getSelectionModel().getSelectedItem();
+                    albumView.setAlbum(album);
+                    switchToAlbumView();
+                }
+            }
+        });
+    }
 
-        if(albums!=null){
-            albumListView.setItems(albums);
-        }
+    private void switchToAlbumView() {
+        this.stage.setScene(this.albumView.getScene());
+    }
 
-		FXMLLoader loader = new FXMLLoader(getClass().getResource(fileName));
-		loader.setController(this);
-		Parent root = (Parent) loader.load();
-		return root;
-	}
+    private Parent initializeFxmlResource(String fileName)
+            throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fileName));
+        loader.setController(this);
+        Parent root = (Parent) loader.load();
+        return root;
+    }
 }
