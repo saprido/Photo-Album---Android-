@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import util.FileHandler;
 
 public class AdminView 
@@ -33,6 +34,8 @@ public class AdminView
 	Button addButton;
 	@FXML
 	TextField usernameTextField;
+	@FXML
+	Button logoutButton;
 	
 	public AdminView(String fileName)
 	{
@@ -56,21 +59,24 @@ public class AdminView
 		return this.scene;
 	}
 	
+	public void addClickHandlerToLogoutButton(EventHandler<ActionEvent> handler)
+	{
+		this.logoutButton.setOnAction(handler);
+	}
+	
 	private void addClickHandlers()
 	{
 		this.addUserButton.setOnAction( new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) 
 			{
-				addButton.setVisible(true);
-				usernameTextField.setVisible(true);
-			}
-		});
-		this.addButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) 
-			{
-				String username = usernameTextField.getText();
+				TextInputDialog dialog = new TextInputDialog();
+				dialog.setTitle("New User");
+				dialog.setHeaderText("Username");
+				dialog.setContentText("Please enter the username");
+				dialog.showAndWait();
+				String username = dialog.getResult();
+				if (username == null) return;
 				users.add(username);
 				addButton.setVisible(false);
 				usernameTextField.setVisible(false);

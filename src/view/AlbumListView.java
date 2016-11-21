@@ -52,6 +52,7 @@ public class AlbumListView {
 
         this.albumView = albumView;
         this.stage = primaryStage;
+        this.albumView.setAlbumListView(this);
 
         addClickHandlers();
     }

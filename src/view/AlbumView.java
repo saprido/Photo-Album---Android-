@@ -38,6 +38,8 @@ public class AlbumView{
 
     //The scene for this view
     private Scene scene;
+    
+    private Stage stage;
 
     private Album album;
 
@@ -56,17 +58,43 @@ public class AlbumView{
     @FXML
     Button backButton;
 
-
     //if add and delete are called, that means AlbumList was updated and should be overwritten
 
-    public AlbumView(String fileName) throws IOException
+    public AlbumView(String fileName, Stage stage) throws IOException
     {
         this.scene = new Scene(initializeFxmlResource(fileName));
+        this.stage = stage;
+        addClickHandlers();
     }
 
     public void setAlbum(Album album)
     {
         this.album = album;
+    }
+    
+    public void setAlbumListView(AlbumListView albumListView)
+    {
+    	this.albumListView = albumListView;
+    }
+
+    public Scene getScene()
+    {
+        return this.scene;
+    }
+    
+    private void addClickHandlers()
+    {
+    	addClickHandlerToBackButton();
+    }
+    
+    private void addClickHandlerToBackButton()
+    {
+    	this.backButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                switchToAlbumListView();
+            }
+        });
     }
 
     private ImageView createImageView(final File imageFile) {
@@ -117,10 +145,10 @@ public class AlbumView{
         }
         return imageView;
     }
-
-    public Scene getScene()
+    
+    private void switchToAlbumListView()
     {
-        return this.scene;
+    	this.stage.setScene(this.albumListView.getScene());
     }
 
     private Parent initializeFxmlResource(String fileName)

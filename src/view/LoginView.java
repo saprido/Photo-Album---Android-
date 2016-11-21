@@ -39,6 +39,11 @@ public class LoginView
 		return this.usernameTextField.getText();
 	}
 	
+	public void setUsername(String username)
+	{
+		this.usernameTextField.setText(username);
+	}
+	
 	public void addClickHandlerToLoginButton(EventHandler<ActionEvent> eventHandler)
 	{
 		this.loginButton.setOnAction(eventHandler);

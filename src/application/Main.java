@@ -39,11 +39,12 @@ public class Main extends Application implements Serializable
 			this.primaryStage = primaryStage;
 			
 			this.loginView = new LoginView(loginViewFileName);
-			this.albumView = new AlbumView(albumViewFileName);
+			this.albumView = new AlbumView(albumViewFileName, primaryStage);
 			this.albumListView = new AlbumListView(albumListViewFileName, albumView, primaryStage);
 			this.adminView = new AdminView(adminViewFileName);
 			
 			addClickHandlerForLoginView();
+			addClickHandlerForAdminView();
 			
 			this.primaryStage.setScene(this.loginView.getScene());
 			this.primaryStage.show();
@@ -79,6 +80,19 @@ public class Main extends Application implements Serializable
 					}
 					//TODO: error message if username doesn't exist
 				}
+			}
+		});
+	}
+	
+	public void addClickHandlerForAdminView() 
+	{
+		//Adds a handler for the back button in the add song view
+		this.adminView.addClickHandlerToLogoutButton(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle( ActionEvent e) 
+			{
+				switchToView(loginView.getScene());
+				loginView.setUsername("");
 			}
 		});
 	}
