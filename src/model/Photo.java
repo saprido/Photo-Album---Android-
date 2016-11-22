@@ -1,19 +1,21 @@
 package model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 
-public class Photo{
-
-    private List<String> tags;
+public class Photo
+{
+    private ObservableList<String> tags;
     private Image image;
     private Date date;
     private int photoId;
@@ -22,6 +24,7 @@ public class Photo{
 
     public Photo(File file)
     {
+    	this.tags = FXCollections.observableArrayList();
     	this.file = file;
         try 
         {
@@ -33,9 +36,12 @@ public class Photo{
 		}
     }
 
-    //utlize google api with this
     public void addTag(String tag){
         this.tags.add(tag);
+    }
+    
+    public void deleteTag(String tag){
+    	this.tags.remove(tag);
     }
 
     public Date getDate() {
@@ -49,6 +55,12 @@ public class Photo{
     public void setDate(Date date) {
         this.date = date;
     }
+    
+    public ObservableList<String> getTags()
+    {
+    	return this.tags;
+    }
+    
     public int getPhotoId(){
         return this.photoId;
     }

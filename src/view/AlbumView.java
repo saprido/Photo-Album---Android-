@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -52,13 +53,24 @@ public class AlbumView
     Button addButton;
     @FXML
     Button backButton;
+    @FXML
+    Button displayButton;
+    @FXML
+    Button captionButton;
+    @FXML
+    Button addTagButton;
 
     //if add and delete are called, that means AlbumList was updated and should be overwritten
     public AlbumView(String fileName, Stage stage, PhotoView photoView) 
     throws IOException
     {
+    	this.scene = new Scene(initializeFxmlResource(fileName));
+    	
+    	this.displayButton.setVisible(false);
+    	this.captionButton.setVisible(false);
+    	this.addTagButton.setVisible(false);
+    	
     	this.photoView = photoView;
-        this.scene = new Scene(initializeFxmlResource(fileName));
         this.stage = stage;
         addClickHandlers();
     }
@@ -128,12 +140,13 @@ public class AlbumView
                 {
                 	if(mouseEvent.getButton().equals(MouseButton.PRIMARY))
                 	{
-                        if(mouseEvent.getClickCount() == 2) 
-                        {
-                        	Stage stage = new Stage();
-                        	stage.setScene(photoView.getScene());
-                        	stage.show();
-                        }
+                		if (mouseEvent.getClickCount() == 1)
+                		{
+                			displayButton.setVisible(true);
+                	    	captionButton.setVisible(true);
+                	    	addTagButton.setVisible(true);
+                	    	addClickHandlersToPhotoButtons(photo);
+                		}
                     }
                 }
         });
@@ -158,6 +171,37 @@ public class AlbumView
                 this.tilePane.getChildren().addAll(imageView);
             }
         }*/
+    }
+    
+    private void addClickHandlersToPhotoButtons(Photo photo)
+    {
+    	this.photoView.setPhoto(photo);
+    	this.displayButton.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            @Override
+            public void handle(ActionEvent event) 
+            {
+            	Stage stage = new Stage();
+            	stage.setScene(photoView.getScene());
+            	photoView.updateTags();
+            	photoView.setImage();
+            	stage.show();
+            }
+        });
+    	this.addTagButton.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            @Override
+            public void handle(ActionEvent event) 
+            {
+            	TextInputDialog dialog = new TextInputDialog();
+            	dialog.setTitle("Tag");
+            	dialog.setHeaderText("Add a tag to this picture");
+            	dialog.setContentText("Please enter the tag:");
+            	dialog.showAndWait();
+            	String tag = dialog.getResult();
+            	photo.addTag(tag);
+            }
+        });
     }
 
     private Parent initializeFxmlResource(String fileName)

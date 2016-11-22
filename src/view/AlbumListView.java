@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.Album;
@@ -58,7 +59,7 @@ public class AlbumListView {
     }
 
     private void addClickHandlers() {
-        addClickHandlerToAddButtons();
+        addClickHandlerToAddButton();
         addClickHandlerToListViewCells();
     }
 
@@ -71,28 +72,25 @@ public class AlbumListView {
         return this.scene;
     }
 
-    private void addClickHandlerToAddButtons() {
+    private void addClickHandlerToAddButton() {
         this.addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent e) {
-                addButton.setVisible(false);
-                albumTextField.setVisible(true);
-                addAlbumButton.setVisible(true);
-            }
-        });
-        this.addAlbumButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                String albumName = albumTextField.getText();
+            public void handle(ActionEvent e) 
+            {
+            	TextInputDialog dialog = new TextInputDialog();
+            	dialog.setTitle("Album");
+            	dialog.setHeaderText("Add Album");
+            	dialog.setContentText("Please enter the album name:");
+            	dialog.showAndWait();
+            	// Traditional way to get the response value.
+            	String result = dialog.getResult();
+            	if (result == null) return;
+            	String albumName = result;
                 //UI changes
                 albumListView.setItems(albums);
-                addButton.setVisible(true);
-                albumTextField.setVisible(false);
-                addAlbumButton.setVisible(false);
                 if (albumName.equals("")) return;
-                Album album = new Album(albumTextField.getText());
+                Album album = new Album(result);
                 albums.add(album);
-                albumTextField.setText("");
             }
         });
     }
