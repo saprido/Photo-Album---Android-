@@ -1,24 +1,34 @@
 package model;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 public class Photo{
 
     private List<String> tags;
-    private Image photoImage;
+    private Image image;
     private Date date;
     private int photoId;
     private Album album;
 
-    public Photo(Image photoImage, Date date, Album album){
-        this.photoImage = photoImage;
-        this.date = date;
-        this.album = album;
-        this.photoId = album.photos.size()+1;
-        album.photos.add(this);
+    public Photo(File file)
+    {
+        try 
+        {
+			this.image = SwingFXUtils.toFXImage(ImageIO.read(file), null);
+		} 
+        catch (IOException e) 
+        {
+			e.printStackTrace();
+		}
     }
 
     //utlize google api with this
@@ -30,8 +40,8 @@ public class Photo{
         return date;
     }
 
-    public Image getPhoto() {
-        return photoImage;
+    public Image getImage() {
+        return this.image;
     }
 
     public void setDate(Date date) {
