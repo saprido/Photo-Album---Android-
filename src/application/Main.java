@@ -13,6 +13,7 @@ import view.AdminView;
 import view.AlbumListView;
 import view.AlbumView;
 import view.LoginView;
+import view.PhotoView;
 import javafx.scene.Scene;
 
 public class Main extends Application implements Serializable
@@ -25,21 +26,23 @@ public class Main extends Application implements Serializable
 	private static String albumListViewFileName = "AlbumListView.fxml";
     private static String albumViewFileName = "AlbumView.fxml";
     private static String adminViewFileName = "AdminView.fxml";
+    private static String photoViewFileName = "PhotoView.fxml";
 	private LoginView loginView;
 	private AlbumListView albumListView;
     private AlbumView albumView; //TODO: initialize + add click handlers
     private AdminView adminView;
+    private PhotoView photoView;
 	
 	@Override
 	public void start(Stage primaryStage) 
 	{
 		try 
 		{
-
 			this.primaryStage = primaryStage;
 			
 			this.loginView = new LoginView(loginViewFileName);
-			this.albumView = new AlbumView(albumViewFileName, primaryStage);
+			this.photoView = new PhotoView(photoViewFileName);
+			this.albumView = new AlbumView(albumViewFileName, primaryStage, photoView);
 			this.albumListView = new AlbumListView(albumListViewFileName, albumView, primaryStage);
 			this.adminView = new AdminView(adminViewFileName);
 			

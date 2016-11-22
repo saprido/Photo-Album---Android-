@@ -13,6 +13,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -25,8 +28,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class AlbumView{
-
+public class AlbumView 
+{
     //The scene for this view
     private Scene scene;
     
@@ -35,6 +38,7 @@ public class AlbumView{
     private Album album;
 
     private AlbumListView albumListView;
+    private PhotoView photoView;
 
     //The list of albums
     private final ObservableList<Photo> photos =
@@ -50,9 +54,10 @@ public class AlbumView{
     Button backButton;
 
     //if add and delete are called, that means AlbumList was updated and should be overwritten
-
-    public AlbumView(String fileName, Stage stage) throws IOException
+    public AlbumView(String fileName, Stage stage, PhotoView photoView) 
+    throws IOException
     {
+    	this.photoView = photoView;
         this.scene = new Scene(initializeFxmlResource(fileName));
         this.stage = stage;
         addClickHandlers();
@@ -112,9 +117,26 @@ public class AlbumView{
         });
     }
 
-    private ImageView createImageView(Image image) 
+    private ImageView createImageView(Photo photo) 
     {
+    	Image image = photo.getImage();
         ImageView imageView = new ImageView(image);
+        imageView.setOnMouseClicked(new EventHandler<MouseEvent>() 
+        {
+                @Override
+                public void handle(MouseEvent mouseEvent) 
+                {
+                	if(mouseEvent.getButton().equals(MouseButton.PRIMARY))
+                	{
+                        if(mouseEvent.getClickCount() == 2) 
+                        {
+                        	Stage stage = new Stage();
+                        	stage.setScene(photoView.getScene());
+                        	stage.show();
+                        }
+                    }
+                }
+        });
         imageView.setFitHeight(100);
 		imageView.setFitWidth(100);
         return imageView;
@@ -127,7 +149,7 @@ public class AlbumView{
     
     private void updateTilePane(Photo photo)
     {
-    	ImageView imageView = createImageView(photo.getImage());
+    	ImageView imageView = createImageView(photo);
         this.tilePane.getChildren().addAll(imageView);
     	/*
     	if(this.photos != null) {

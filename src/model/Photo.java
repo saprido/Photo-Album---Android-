@@ -18,9 +18,11 @@ public class Photo{
     private Date date;
     private int photoId;
     private Album album;
+    private File file;
 
     public Photo(File file)
     {
+    	this.file = file;
         try 
         {
 			this.image = SwingFXUtils.toFXImage(ImageIO.read(file), null);
