@@ -1,12 +1,16 @@
 package application;
 	
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Optional;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import model.AlbumList;
 import util.FileHandler;
 import util.UserSession;
 import view.AdminView;
@@ -15,6 +19,9 @@ import view.AlbumView;
 import view.LoginView;
 import view.PhotoView;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 
 public class Main extends Application implements Serializable
 {
@@ -41,16 +48,45 @@ public class Main extends Application implements Serializable
 			this.primaryStage = primaryStage;
 			
 			this.loginView = new LoginView(loginViewFileName);
-			this.photoView = new PhotoView(photoViewFileName);
-			this.albumView = new AlbumView(albumViewFileName, primaryStage, photoView);
-			this.albumListView = new AlbumListView(albumListViewFileName, albumView, primaryStage);
-			this.adminView = new AdminView(adminViewFileName);
 			
 			addClickHandlerForLoginView();
+			this.adminView = new AdminView(adminViewFileName);
 			addClickHandlerForAdminView();
 			
 			this.primaryStage.setScene(this.loginView.getScene());
 			this.primaryStage.show();
+			
+			this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+		        @Override
+		        	public void handle(WindowEvent event) 
+		        	{
+			        	Alert alert = new Alert(AlertType.CONFIRMATION);
+			        	alert.setTitle("Save");
+			        	alert.setHeaderText("Save your changes");
+			        	alert.setContentText("Would you like to save your changes?");
+	
+			        	ButtonType yesButton = new ButtonType("Yes");
+			        	ButtonType noButton = new ButtonType("No");
+			        	alert.getButtonTypes().setAll(yesButton, noButton);
+			        	Optional<ButtonType> result = alert.showAndWait();
+			        	if (result.get() == yesButton)
+			        	{
+			        		try 
+			        		{
+								UserSession.albumList.writeAlbumList();
+							} 
+			        		catch (FileNotFoundException e)
+			        		{
+								e.printStackTrace();
+							} 
+			        		catch (IOException e) 
+			        		{
+								e.printStackTrace();
+							}
+			        	}
+		        	}
+				});
 		} 
 		catch(Exception e) 
 		{
@@ -72,6 +108,24 @@ public class Main extends Application implements Serializable
 				else 
 				{
 					UserSession.username = loginView.getUsername();
+					UserSession.albumList = new AlbumList(UserSession.username);
+					try {
+						UserSession.loadedAlbumList = AlbumList.createAlbumListFromFile();
+						System.out.println(UserSession.loadedAlbumList);
+					} catch (ClassNotFoundException | IOException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+					photoView = new PhotoView(photoViewFileName);
+					
+					try {
+						albumView = new AlbumView(albumViewFileName, primaryStage, photoView);
+						albumListView = new AlbumListView(albumListViewFileName, albumView, primaryStage);
+					}
+					catch (IOException e3) {
+						// TODO Auto-generated catch block
+						e3.printStackTrace();
+					}
 					//TODO: populate album list with user specific albums
 					try {
 						if (userExists())

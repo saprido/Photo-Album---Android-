@@ -14,7 +14,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import model.AlbumList;
 import util.FileHandler;
+import util.UserSession;
 
 public class AdminView 
 {
@@ -86,6 +88,8 @@ public class AdminView
 				{
 					FileHandler.addUsername(username);
 					FileHandler.createUserFile(username);
+					UserSession.albumList = new AlbumList(username);
+					UserSession.albumList.writeAlbumList();
 				} 
 				catch (IOException e1) 
 				{

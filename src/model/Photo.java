@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,11 +15,11 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-public class Photo
+public class Photo implements Serializable
 {
-    private ObservableList<String> tags;
+    private List<String> tags;
     private String caption = "";
-    private Image image;
+    private transient Image image;
     private String date;
     private int photoId;
     private Album album;
@@ -26,7 +27,7 @@ public class Photo
 
     public Photo(File file)
     {
-    	this.tags = FXCollections.observableArrayList();
+    	this.tags = new ArrayList<String>();
     	this.file = file;
     	long date = getFile().lastModified();
     	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
@@ -75,7 +76,9 @@ public class Photo
     
     public ObservableList<String> getTags()
     {
-    	return this.tags;
+    	ObservableList<String> obTags = FXCollections.observableArrayList();
+    	obTags.addAll(this.tags);
+    	return obTags;
     }
     
     public int getPhotoId(){

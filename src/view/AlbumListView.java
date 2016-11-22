@@ -1,6 +1,8 @@
 package view;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,7 +27,8 @@ public class AlbumListView {
     private Scene scene;
 
     //The list of albums
-    private ObservableList<Album> albums =
+    private List<Album> albums = new ArrayList<Album>();
+    private ObservableList<Album> albumsOL =
             FXCollections.observableArrayList();
 
     private AlbumView albumView;
@@ -51,6 +54,10 @@ public class AlbumListView {
         this.scene = new Scene(initializeFxmlResource(fileName));
         this.albumTextField.setVisible(false);
         this.addAlbumButton.setVisible(false);
+        
+        this.albums = UserSession.loadedAlbumList.getAlbums();
+        this.albumsOL.addAll(this.albums);
+        this.albumListView.setItems(albumsOL);
 
         this.albumView = albumView;
         this.stage = primaryStage;
@@ -59,7 +66,7 @@ public class AlbumListView {
         addClickHandlers();
     }
     
-    public ObservableList<Album> getAlbums()
+    public List<Album> getAlbums()
     {
     	return this.albums;
     }
@@ -93,8 +100,9 @@ public class AlbumListView {
                 if (albumName.equals("")) return;
                 Album album = new Album(result);
                 albums.add(album);
+                albumsOL.add(album);
                 UserSession.albumList.setAlbums(albums);
-                albumListView.setItems(albums);
+                albumListView.setItems(albumsOL);
             }
         });
     }
@@ -106,8 +114,9 @@ public class AlbumListView {
             {
             	Album album = (Album) albumListView.getSelectionModel().getSelectedItem();
             	albums.remove(album);
+            	albumsOL.remove(album);
             	UserSession.albumList.setAlbums(albums);
-            	albumListView.setItems(albums);
+            	albumListView.setItems(albumsOL);
             }
         });
     }
@@ -132,7 +141,7 @@ public class AlbumListView {
                 if (albumName.equals("")) return;
                 album.setName(albumName);
                 UserSession.albumList.setAlbums(albums);
-                albumListView.setItems(albums);
+                //albumListView.setItems(albums);
             }
         });
     }
