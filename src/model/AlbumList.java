@@ -9,6 +9,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 /**
  * 
  * @author syedmahmood
@@ -19,7 +22,7 @@ import java.util.List;
 
 public class AlbumList implements Serializable
 {
-	private List<Album> albums;
+	private ObservableList<Album> albums;
 	
 	public static final String storeDir = "dat";
 	public static final String storeFile = "albums.dat";
@@ -28,8 +31,13 @@ public class AlbumList implements Serializable
 	
 	public AlbumList(String username)
 	{
-		this.albums = new ArrayList<Album>();
+		this.albums = FXCollections.observableArrayList();
 		this.finalFileName = username + this.storeFile;
+	}
+	
+	public void setAlbums(ObservableList<Album> albums)
+	{
+		this.albums = albums;
 	}
 	
 	public List<Album> getAlbums()
@@ -45,6 +53,12 @@ public class AlbumList implements Serializable
 	public void deleteAlbum(Album album)
 	{
 		this.albums.remove(album);
+	}
+	
+	@Override
+	public String toString()
+	{
+		return this.albums.toString();
 	}
 	
 	public void writeAlbumList() 

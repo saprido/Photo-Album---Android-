@@ -22,7 +22,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Album;
 import model.Photo;
-
+import util.UserSession;
 import javafx.geometry.Insets;
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,7 +41,7 @@ public class AlbumView
     private AlbumListView albumListView;
     private PhotoView photoView;
 
-    //The list of albums
+    //The list of photos
     private final ObservableList<Photo> photos =
             FXCollections.observableArrayList();
 
@@ -65,10 +65,14 @@ public class AlbumView
     throws IOException
     {
     	this.scene = new Scene(initializeFxmlResource(fileName));
+    	this.scene.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                hideAllImageButtons();
+            }
+        });
     	
-    	this.displayButton.setVisible(false);
-    	this.captionButton.setVisible(false);
-    	this.addTagButton.setVisible(false);
+    	hideAllImageButtons();
     	
     	this.photoView = photoView;
         this.stage = stage;
@@ -107,6 +111,7 @@ public class AlbumView
             @Override
             public void handle(ActionEvent e) {
                 switchToAlbumListView();
+                System.out.println(UserSession.albumList);
             }
         });
     }
@@ -115,13 +120,15 @@ public class AlbumView
     {
     	this.addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent e) {
+            public void handle(ActionEvent e) 
+            {
             	File file = new FileChooser().showOpenDialog(stage);
                 if (file != null) 
                 {
                 	Photo photo = new Photo(file);
                     album.addPhoto(photo);
                     photos.add(photo);
+                    UserSession.albumList.setAlbums(albumListView.getAlbums());
                     updateTilePane(photo);
                 }
                
@@ -145,7 +152,8 @@ public class AlbumView
                 			displayButton.setVisible(true);
                 	    	captionButton.setVisible(true);
                 	    	addTagButton.setVisible(true);
-                	    	addClickHandlersToPhotoButtons(photo);
+                	    	deleteButton.setVisible(true);
+                	    	addClickHandlersToPhotoButtons(photo, imageView);
                 		}
                     }
                 }
@@ -173,7 +181,7 @@ public class AlbumView
         }*/
     }
     
-    private void addClickHandlersToPhotoButtons(Photo photo)
+    private void addClickHandlersToPhotoButtons(Photo photo, ImageView imageView)
     {
     	this.photoView.setPhoto(photo);
     	this.displayButton.setOnAction(new EventHandler<ActionEvent>() 
@@ -183,9 +191,12 @@ public class AlbumView
             {
             	Stage stage = new Stage();
             	stage.setScene(photoView.getScene());
+            	photoView.setDate();
             	photoView.updateTags();
             	photoView.setImage();
+            	photoView.setCaption();
             	stage.show();
+            	hideAllImageButtons();
             }
         });
     	this.addTagButton.setOnAction(new EventHandler<ActionEvent>() 
@@ -200,8 +211,45 @@ public class AlbumView
             	dialog.showAndWait();
             	String tag = dialog.getResult();
             	photo.addTag(tag);
+            	hideAllImageButtons();
+            	UserSession.albumList.setAlbums(albumListView.getAlbums());
             }
         });
+    	this.deleteButton.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            @Override
+            public void handle(ActionEvent event) 
+            {
+            	tilePane.getChildren().removeAll(imageView);
+            	hideAllImageButtons();
+            	album.removePhoto(photo);
+            	UserSession.albumList.setAlbums(albumListView.getAlbums());
+            }
+        });
+    	this.captionButton.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            @Override
+            public void handle(ActionEvent event) 
+            {
+            	TextInputDialog dialog = new TextInputDialog(photo.getCaption());
+            	dialog.setTitle("Caption");
+            	dialog.setHeaderText("Caption this picture");
+            	dialog.setContentText("Please enter the caption:");
+            	dialog.showAndWait();
+            	String caption = dialog.getResult();
+            	photo.setCaption(caption);
+            	hideAllImageButtons();
+            	UserSession.albumList.setAlbums(albumListView.getAlbums());
+            }
+        });
+    }
+    
+    private void hideAllImageButtons()
+    {
+    	this.displayButton.setVisible(false);
+    	this.captionButton.setVisible(false);
+    	this.addTagButton.setVisible(false);
+    	this.deleteButton.setVisible(false);
     }
 
     private Parent initializeFxmlResource(String fileName)

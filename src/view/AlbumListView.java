@@ -18,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import model.Album;
 import util.FileHandler;
+import util.UserSession;
 
 public class AlbumListView {
     //The scene for this view
@@ -44,7 +45,7 @@ public class AlbumListView {
     @FXML
     Button addAlbumButton;
     @FXML
-    ListView albumListView;
+    ListView<Album> albumListView;
 
     public AlbumListView(String fileName, AlbumView albumView, Stage primaryStage) throws IOException {
         this.scene = new Scene(initializeFxmlResource(fileName));
@@ -57,16 +58,18 @@ public class AlbumListView {
 
         addClickHandlers();
     }
+    
+    public ObservableList<Album> getAlbums()
+    {
+    	return this.albums;
+    }
 
     private void addClickHandlers() {
         addClickHandlerToAddButton();
+        addClickHandlerToRenameButton();
         addClickHandlerToListViewCells();
+        addClickHandlerToDeleteButton();
     }
-
-    public void addClickHandlerToDeleteButton(EventHandler<ActionEvent> eventHandler) {
-        this.addButton.setOnAction(eventHandler);
-    }
-
 
     public Scene getScene() {
         return this.scene;
@@ -82,15 +85,54 @@ public class AlbumListView {
             	dialog.setHeaderText("Add Album");
             	dialog.setContentText("Please enter the album name:");
             	dialog.showAndWait();
-            	// Traditional way to get the response value.
+            	
             	String result = dialog.getResult();
             	if (result == null) return;
             	String albumName = result;
                 //UI changes
-                albumListView.setItems(albums);
                 if (albumName.equals("")) return;
                 Album album = new Album(result);
                 albums.add(album);
+                UserSession.albumList.setAlbums(albums);
+                albumListView.setItems(albums);
+            }
+        });
+    }
+    
+    private void addClickHandlerToDeleteButton() {
+        this.deleteButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) 
+            {
+            	Album album = (Album) albumListView.getSelectionModel().getSelectedItem();
+            	albums.remove(album);
+            	UserSession.albumList.setAlbums(albums);
+            	albumListView.setItems(albums);
+            }
+        });
+    }
+    
+    private void addClickHandlerToRenameButton()
+    {
+    	this.renameButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) 
+            {
+            	Album album = (Album) albumListView.getSelectionModel().getSelectedItem();
+            	TextInputDialog dialog = new TextInputDialog(album.getName());
+            	dialog.setTitle("Album");
+            	dialog.setHeaderText("Rename Album");
+            	dialog.setContentText("Please enter the album name:");
+            	dialog.showAndWait();
+            	
+            	String result = dialog.getResult();
+            	if (result == null) return;
+            	String albumName = result;
+                //UI changes
+                if (albumName.equals("")) return;
+                album.setName(albumName);
+                UserSession.albumList.setAlbums(albums);
+                albumListView.setItems(albums);
             }
         });
     }
@@ -103,6 +145,7 @@ public class AlbumListView {
                 if (click.getClickCount() == 2) {
                     Album album = (Album) albumListView.getSelectionModel().getSelectedItem();
                     albumView.setAlbum(album);
+                    System.out.println(album.getName());
                     switchToAlbumView();
                 }
             }

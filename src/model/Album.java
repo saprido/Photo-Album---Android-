@@ -22,10 +22,24 @@ public class Album implements Serializable {
     @Override
     public String toString()
     {
-    	return this.name + "\n" + "Naseer " + "\n" + "Hello world";
+    	return this.name + "Photos: " + this.photos;
     }
     
     public void setName(String name){
         this.name = name;
+    }
+    
+    public String getName(){
+    	return this.name;
+    }
+    
+    public List<Photo> getPhotos()
+    {
+    	return this.photos;
+    }
+    
+    public void removePhoto(Photo photo)
+    {
+    	this.photos.remove(photo);
     }
 }

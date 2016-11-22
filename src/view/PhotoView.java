@@ -18,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import model.Photo;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 public class PhotoView
 {
@@ -32,6 +33,8 @@ public class PhotoView
     Label nameLabel;
     @FXML
     Label dateLabel;
+    @FXML
+    Label captionLabel;
     @FXML
     ListView<String> tagsListView;
     @FXML
@@ -83,6 +86,16 @@ public class PhotoView
     public void setImage()
     {
     	this.imageView.setImage(this.photo.getImage());
+    }
+    
+    public void setCaption()
+    {
+    	this.captionLabel.setText(this.photo.getCaption());
+    }
+    
+    public void setDate()
+    {
+    	this.dateLabel.setText(this.photo.getDate());
     }
     
     public void updateTags()
