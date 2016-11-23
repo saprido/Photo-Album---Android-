@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
 
 public class AlbumView {
     //The scene for this view
@@ -261,6 +262,23 @@ public class AlbumView {
                 for (Photo photo : photos) {
                     ImageView imageView = createImageView(photo);
                     tile.getChildren().add(imageView);
+                }
+                update(tile);
+            }
+        });
+
+        this.dateRangeButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                clearButton.fire();
+                TilePane tile = new TilePane();
+                for(Photo photo: photos){
+                    LocalDate start = startDate.getValue();
+                    LocalDate end = endDate.getValue();
+                    if(photo.getDate().isAfter(start)&&photo.getDate().isBefore(end)){
+                        ImageView imageView = createImageView(photo);
+                        tile.getChildren().add(imageView);
+                    }
                 }
                 update(tile);
             }

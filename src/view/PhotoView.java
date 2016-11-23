@@ -95,7 +95,7 @@ public class PhotoView
     
     public void setDate()
     {
-    	this.dateLabel.setText(this.photo.getDate());
+    	this.dateLabel.setText(this.photo.getDate().toString());
     }
     
     public void updateTags()

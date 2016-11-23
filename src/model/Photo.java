@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +21,7 @@ public class Photo implements Serializable
     private List<String> tags;
     private String caption = "";
     private transient Image image;
-    private String date;
+    private LocalDate date;
     private int photoId;
     private Album album;
     private File file;
@@ -30,8 +31,9 @@ public class Photo implements Serializable
     	this.tags = new ArrayList<String>();
     	this.file = file;
     	long date = getFile().lastModified();
-    	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-    	this.date = sdf.format(date);
+    	//SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+    	//this.date = sdf.format(date);
+        this.date = LocalDate.now();
         try 
         {
 			this.image = SwingFXUtils.toFXImage(ImageIO.read(file), null);
@@ -58,7 +60,7 @@ public class Photo implements Serializable
     	return this.caption;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -70,7 +72,7 @@ public class Photo implements Serializable
     	return this.file;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
     
