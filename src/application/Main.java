@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Optional;
 
+import control.AdminView;
+import control.AlbumListView;
+import control.AlbumView;
+import control.LoginView;
+import control.PhotoView;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,11 +18,6 @@ import javafx.stage.WindowEvent;
 import model.AlbumList;
 import util.FileHandler;
 import util.UserSession;
-import view.AdminView;
-import view.AlbumListView;
-import view.AlbumView;
-import view.LoginView;
-import view.PhotoView;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -29,11 +29,11 @@ public class Main extends Application implements Serializable
 
     String filePath = "data.txt";
 
-	private static String loginViewFileName = "LoginView.fxml";
-	private static String albumListViewFileName = "AlbumListView.fxml";
-    private static String albumViewFileName = "AlbumView.fxml";
-    private static String adminViewFileName = "AdminView.fxml";
-    private static String photoViewFileName = "PhotoView.fxml";
+	private static String loginViewFileName = "/view/LoginView.fxml";
+	private static String albumListViewFileName = "/view/AlbumListView.fxml";
+    private static String albumViewFileName = "/view/AlbumView.fxml";
+    private static String adminViewFileName = "/view/AdminView.fxml";
+    private static String photoViewFileName = "/view/PhotoView.fxml";
 	private LoginView loginView;
 	private AlbumListView albumListView;
     private AlbumView albumView; //TODO: initialize + add click handlers

@@ -1,4 +1,4 @@
-package view;/**
+package control;/**
  * Created by Sanju on 11/19/16.
  */
 

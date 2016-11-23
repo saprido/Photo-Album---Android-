@@ -1,4 +1,4 @@
-package view;
+package control;
 
 import java.io.IOException;
 

@@ -2,7 +2,7 @@
  * Created by Sanju on 11/20/16.
  */
 
-package view;
+package control;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

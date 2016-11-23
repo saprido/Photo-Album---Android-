@@ -1,7 +1,7 @@
 //Author: Syed Mahmood
 //Author: Sanjana Dodley
 
-package view;
+package control;
 
 import java.io.IOException;
 
