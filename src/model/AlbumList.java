@@ -59,7 +59,15 @@ public class AlbumList implements Serializable
 	{
 		this.albums.remove(album);
 	}
-	
+
+	public Album getAlbumFromName(String name){
+		for(Album album : albums){
+			if(album.getName().equals(name)){
+				return album;
+			}
+		}
+		return null;
+	}
 	@Override
 	public String toString()
 	{
