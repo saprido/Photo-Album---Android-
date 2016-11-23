@@ -11,9 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -69,8 +67,15 @@ public class AlbumView {
     Button moveButton;
     @FXML
     Button clearButton;
+    @FXML
+    Button dateRangeButton;
+    @FXML
+    DatePicker startDate;
+    @FXML
+    DatePicker endDate;
+    @FXML
+    Label toLabel;
 
-    public TilePane defaultTilePane;
 
     //if add and delete are called, that means AlbumList was updated and should be overwritten
     public AlbumView(String fileName, Stage stage, PhotoView photoView)
@@ -149,6 +154,11 @@ public class AlbumView {
                         captionButton.setVisible(true);
                         addTagButton.setVisible(true);
                         deleteButton.setVisible(true);
+                        moveButton.setVisible(true);
+                        startDate.setVisible(false);
+                        endDate.setVisible(false);
+                        dateRangeButton.setVisible(false);
+                        toLabel.setVisible(false);
                         addClickHandlersToPhotoButtons(photo, imageView);
                     }
                 }
@@ -166,7 +176,6 @@ public class AlbumView {
     private void updateTilePane(Photo photo) {
         ImageView imageView = createImageView(photo);
         this.tilePane.getChildren().addAll(imageView);
-        this.defaultTilePane.getChildren().addAll(imageView);
 
     }
 
@@ -209,7 +218,6 @@ public class AlbumView {
             @Override
             public void handle(ActionEvent event) {
                 tilePane.getChildren().removeAll(imageView);
-                defaultTilePane.getChildren().removeAll(imageView);
                 hideAllImageButtons();
                 album.removePhoto(photo);
                 UserSession.albumList.setAlbums(albumListView.getAlbums());
@@ -265,6 +273,11 @@ public class AlbumView {
         this.captionButton.setVisible(false);
         this.addTagButton.setVisible(false);
         this.deleteButton.setVisible(false);
+        this.moveButton.setVisible(false);
+        this.startDate.setVisible(true);
+        this.endDate.setVisible(true);
+        this.dateRangeButton.setVisible(true);
+        this.toLabel.setVisible(true);
     }
 
     private Parent initializeFxmlResource(String fileName)
