@@ -65,7 +65,8 @@ public class AlbumListView {
 
         addClickHandlers();
     }
-    
+
+
     public List<Album> getAlbums()
     {
     	return this.albums;

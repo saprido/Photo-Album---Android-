@@ -30,6 +30,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class AlbumView {
     //The scene for this view
@@ -76,7 +79,8 @@ public class AlbumView {
     DatePicker endDate;
     @FXML
     Label toLabel;
-
+    @FXML
+    ListView albumSideListView;
 
     //if add and delete are called, that means AlbumList was updated and should be overwritten
     public AlbumView(String fileName, Stage stage, PhotoView photoView)
@@ -92,9 +96,10 @@ public class AlbumView {
         hideAllImageButtons();
         this.photoView = photoView;
         this.stage = stage;
+        //this.albumSideListView.setItems(FXCollections.observableArrayList(UserSession.albumList.getAlbums()));
+        this.albumSideListView.setVisible(false);
         addClickHandlers();
     }
-
     public void setAlbum(Album album) {
         this.album = album;
     }
@@ -236,6 +241,69 @@ public class AlbumView {
                 photo.setCaption(caption);
                 hideAllImageButtons();
                 UserSession.albumList.setAlbums(albumListView.getAlbums());
+            }
+        });
+
+        this.moveButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                List<String> choices = new ArrayList<String>();
+                for(Album al: UserSession.albumList.getAlbums()){
+                    choices.add(al.getName());
+                }
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Dialog with Custom Actions");
+                alert.setHeaderText("Look, a Confirmation Dialog with Custom Actions");
+                alert.setContentText("Choose your option.");
+
+                ButtonType buttonTypeOne = new ButtonType("Move");
+                ButtonType buttonTypeTwo = new ButtonType("Copy");
+                ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == buttonTypeOne){
+
+                    ChoiceDialog<String> dialog = new ChoiceDialog<>("b", choices);
+                    dialog.setTitle("Choose Album");
+                    dialog.setHeaderText("Choose the Album which you would like to Move this Photo To");
+                    dialog.setContentText("Choose an album:");
+
+                    Optional<String> moveResult = dialog.showAndWait();
+                    if (moveResult.isPresent()){
+                       Album albumSelection = UserSession.albumList.getAlbumFromName(moveResult.get());
+                        if(albumSelection!=null){
+                            albumSelection.addPhoto(photo);
+
+                            ////NEED IMPLEMENTATION TO REMOVE PHOTO FROM CURRENT TILEPANE BUT SHOW IT SELECTED ALBUM'S
+                            /// TILEPANE
+                            album.removePhoto(photo);
+                            UserSession.albumList.setAlbums(albumListView.getAlbums());
+                        }
+                    }
+
+                } else if (result.get() == buttonTypeTwo) {
+                    ChoiceDialog<String> dialog = new ChoiceDialog<>("b", choices);
+                    dialog.setTitle("Choose Album");
+                    dialog.setHeaderText("Choose the Album which you would like to Copy this Photo To");
+                    dialog.setContentText("Choose an album:");
+
+                    Optional<String> moveResult = dialog.showAndWait();
+                    if (moveResult.isPresent()){
+                        Album albumSelection = UserSession.albumList.getAlbumFromName(moveResult.get());
+                        if(albumSelection!=null){
+                            albumSelection.addPhoto(photo);
+                            UserSession.albumList.setAlbums(albumListView.getAlbums());
+                        }
+                    }
+                } else {
+                    alert.close();
+                }
+                hideAllImageButtons();
+
             }
         });
 
