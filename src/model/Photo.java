@@ -22,8 +22,6 @@ public class Photo implements Serializable
     private String caption = "";
     private transient Image image;
     private LocalDate date;
-    private int photoId;
-    private Album album;
     private File file;
 
     public Photo(File file)
@@ -82,10 +80,7 @@ public class Photo implements Serializable
     	obTags.addAll(this.tags);
     	return obTags;
     }
-    
-    public int getPhotoId(){
-        return this.photoId;
-    }
+
     
     @Override
     public String toString(){
