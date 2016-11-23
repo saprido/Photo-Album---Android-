@@ -1,9 +1,16 @@
 package model;
 
+/*
+  @author Sanjana Dodley
+  @author Syed Mahmood
+*/
+
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/* Album represents a collection of photos*/
 public class Album implements Serializable {
 
     public String name;

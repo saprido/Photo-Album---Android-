@@ -1,3 +1,9 @@
+/*
+  @author Sanjana Dodley
+  @author Syed Mahmood
+*/
+
+
 package control;
 
 import java.io.*;
@@ -21,6 +27,9 @@ import javafx.stage.Stage;
 import model.Album;
 import util.FileHandler;
 import util.UserSession;
+/*
+    Shows the list of albums correlated to a specific User
+ */
 
 public class AlbumListView {
     //The scene for this view
@@ -54,7 +63,7 @@ public class AlbumListView {
         this.scene = new Scene(initializeFxmlResource(fileName));
         this.albumTextField.setVisible(false);
         this.addAlbumButton.setVisible(false);
-        
+
         this.albums = UserSession.loadedAlbumList.getAlbums();
         this.albumsOL.addAll(this.albums);
         this.albumListView.setItems(albumsOL);
@@ -67,9 +76,9 @@ public class AlbumListView {
     }
 
 
-    public List<Album> getAlbums()
-    {
-    	return this.albums;
+    /* @returns the class's albums*/
+    public List<Album> getAlbums() {
+        return this.albums;
     }
 
     private void addClickHandlers() {
@@ -79,24 +88,25 @@ public class AlbumListView {
         addClickHandlerToDeleteButton();
     }
 
+    /* @returns the class's Scene*/
     public Scene getScene() {
         return this.scene;
     }
 
+    /* Click Handlers for the AddAlbum Button*/
     private void addClickHandlerToAddButton() {
         this.addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent e) 
-            {
-            	TextInputDialog dialog = new TextInputDialog();
-            	dialog.setTitle("Album");
-            	dialog.setHeaderText("Add Album");
-            	dialog.setContentText("Please enter the album name:");
-            	dialog.showAndWait();
-            	
-            	String result = dialog.getResult();
-            	if (result == null) return;
-            	String albumName = result;
+            public void handle(ActionEvent e) {
+                TextInputDialog dialog = new TextInputDialog();
+                dialog.setTitle("Album");
+                dialog.setHeaderText("Add Album");
+                dialog.setContentText("Please enter the album name:");
+                dialog.showAndWait();
+
+                String result = dialog.getResult();
+                if (result == null) return;
+                String albumName = result;
                 //UI changes
                 if (albumName.equals("")) return;
                 Album album = new Album(result);
@@ -107,37 +117,36 @@ public class AlbumListView {
             }
         });
     }
-    
+
+    /* Click Handlers for the delet an Album Button*/
     private void addClickHandlerToDeleteButton() {
         this.deleteButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent e) 
-            {
-            	Album album = (Album) albumListView.getSelectionModel().getSelectedItem();
-            	albums.remove(album);
-            	albumsOL.remove(album);
-            	UserSession.albumList.setAlbums(albums);
-            	albumListView.setItems(albumsOL);
+            public void handle(ActionEvent e) {
+                Album album = (Album) albumListView.getSelectionModel().getSelectedItem();
+                albums.remove(album);
+                albumsOL.remove(album);
+                UserSession.albumList.setAlbums(albums);
+                albumListView.setItems(albumsOL);
             }
         });
     }
-    
-    private void addClickHandlerToRenameButton()
-    {
-    	this.renameButton.setOnAction(new EventHandler<ActionEvent>() {
+
+    /* Click Handlers for the rename an album Button*/
+    private void addClickHandlerToRenameButton() {
+        this.renameButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent e) 
-            {
-            	Album album = (Album) albumListView.getSelectionModel().getSelectedItem();
-            	TextInputDialog dialog = new TextInputDialog(album.getName());
-            	dialog.setTitle("Album");
-            	dialog.setHeaderText("Rename Album");
-            	dialog.setContentText("Please enter the album name:");
-            	dialog.showAndWait();
-            	
-            	String result = dialog.getResult();
-            	if (result == null) return;
-            	String albumName = result;
+            public void handle(ActionEvent e) {
+                Album album = (Album) albumListView.getSelectionModel().getSelectedItem();
+                TextInputDialog dialog = new TextInputDialog(album.getName());
+                dialog.setTitle("Album");
+                dialog.setHeaderText("Rename Album");
+                dialog.setContentText("Please enter the album name:");
+                dialog.showAndWait();
+
+                String result = dialog.getResult();
+                if (result == null) return;
+                String albumName = result;
                 //UI changes
                 if (albumName.equals("")) return;
                 album.setName(albumName);
@@ -147,6 +156,7 @@ public class AlbumListView {
         });
     }
 
+    /* Click Handlers to pop up the corresponding albumView for a specific album*/
     private void addClickHandlerToListViewCells() {
         this.albumListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -162,6 +172,7 @@ public class AlbumListView {
         });
     }
 
+    /* Switches to albumView*/
     private void switchToAlbumView() {
         this.stage.setScene(this.albumView.getScene());
     }

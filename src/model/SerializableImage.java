@@ -1,4 +1,8 @@
 package model;
+/*
+	@author Syed Mahmood
+    @author Sanjana Dodley
+*/
 
 import java.io.InputStream;
 import java.io.Serializable;

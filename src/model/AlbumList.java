@@ -15,77 +15,69 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import util.UserSession;
+/*
+  @author Sanjana Dodley
+  @author Syed Mahmood
+*/
 
 /**
- * 
- * @author syedmahmood
- *
- * Stores the albums for a specific user. 
- * 
+ * Stores the albums for a specific user.
  */
 
-public class AlbumList implements Serializable
-{
-	private List<Album> albums;
-	
-	public static final String storeDir = "dat";
-	public static final String storeFile = "albums.dat";
-	private static final long serialVersionUID = 1L;
-	
-	private String finalFileName;
-	
-	public AlbumList(String username)
-	{
-		this.albums = new ArrayList<Album>();
-		this.finalFileName = username + this.storeFile;
-	}
-	
-	public void setAlbums(List<Album> albums)
-	{
-		this.albums = albums;
-	}
-	
-	public List<Album> getAlbums()
-	{
-		return this.albums;
-	}
-	
-	public void addAlbum(Album album)
-	{
-		this.albums.add(album);
-	}
-	
-	public void deleteAlbum(Album album)
-	{
-		this.albums.remove(album);
-	}
+public class AlbumList implements Serializable {
+    private List<Album> albums;
 
-	public Album getAlbumFromName(String name){
-		for(Album album : albums){
-			if(album.getName().equals(name)){
-				return album;
-			}
-		}
-		return null;
-	}
-	@Override
-	public String toString()
-	{
-		return this.albums.toString();
-	}
-	
-	public static AlbumList createAlbumListFromFile() throws FileNotFoundException, IOException, ClassNotFoundException
-	{
-		ObjectInputStream ois = new ObjectInputStream(
-				new FileInputStream(UserSession.username + storeFile));
-				return (AlbumList) ois.readObject(); 
-	}
-	
-	public void writeAlbumList() 
-	throws FileNotFoundException, IOException
-	{
-		ObjectOutputStream oos = new ObjectOutputStream(
-				new FileOutputStream(this.finalFileName));
-		oos.writeObject(this);
-	}
+    public static final String storeDir = "dat";
+    public static final String storeFile = "albums.dat";
+    private static final long serialVersionUID = 1L;
+
+    private String finalFileName;
+
+    public AlbumList(String username) {
+        this.albums = new ArrayList<Album>();
+        this.finalFileName = username + this.storeFile;
+    }
+
+    public void setAlbums(List<Album> albums) {
+        this.albums = albums;
+    }
+
+    public List<Album> getAlbums() {
+        return this.albums;
+    }
+
+    public void addAlbum(Album album) {
+        this.albums.add(album);
+    }
+
+    public void deleteAlbum(Album album) {
+        this.albums.remove(album);
+    }
+
+    public Album getAlbumFromName(String name) {
+        for (Album album : albums) {
+            if (album.getName().equals(name)) {
+                return album;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return this.albums.toString();
+    }
+
+    public static AlbumList createAlbumListFromFile() throws FileNotFoundException, IOException, ClassNotFoundException {
+        ObjectInputStream ois = new ObjectInputStream(
+                new FileInputStream(UserSession.username + storeFile));
+        return (AlbumList) ois.readObject();
+    }
+
+    public void writeAlbumList()
+            throws FileNotFoundException, IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(
+                new FileOutputStream(this.finalFileName));
+        oos.writeObject(this);
+    }
 }

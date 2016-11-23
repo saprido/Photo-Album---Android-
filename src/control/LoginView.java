@@ -1,6 +1,7 @@
 //Author: Syed Mahmood
 //Author: Sanjana Dodley
 
+
 package control;
 
 import java.io.IOException;
@@ -23,12 +24,14 @@ public class LoginView
 	TextField usernameTextField;
 	@FXML
 	Button loginButton;
-	
+
+	/* Constructor*/
 	public LoginView(String fileName) throws IOException
 	{
 		this.scene = new Scene(initializeFxmlResource(fileName));
 	}
-	
+
+
 	public Scene getScene()
 	{
 		return this.scene;

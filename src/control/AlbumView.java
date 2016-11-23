@@ -1,6 +1,9 @@
-package control;/**
- * Created by Sanju on 11/19/16.
- */
+package control;
+/*
+  @author Sanjana Dodley
+  @author Syed Mahmood
+*/
+
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -100,22 +103,28 @@ public class AlbumView {
         this.albumSideListView.setVisible(false);
         addClickHandlers();
     }
+
+    /* sets album to an album instance*/
     public void setAlbum(Album album) {
         this.album = album;
     }
 
+    /* @return this's album */
     public Album getAlbum() {
         return this.album;
     }
 
+    /* sets album to an album instance*/
     public void setAlbumListView(AlbumListView albumListView) {
         this.albumListView = albumListView;
     }
 
+    /* sets album to an album instance*/
     public Scene getScene() {
         return this.scene;
     }
 
+    /* calls click handler methods for the add and back button*/
     private void addClickHandlers() {
         addClickHandlerToAddButton();
         addClickHandlerToBackButton();
@@ -131,6 +140,7 @@ public class AlbumView {
         });
     }
 
+    /* click handler for the add button*/
     private void addClickHandlerToAddButton() {
         this.addButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -148,6 +158,9 @@ public class AlbumView {
         });
     }
 
+    /* @param Photo takes in a photo and makes it an ImageView
+    * @return ImageView
+    * */
     private ImageView createImageView(Photo photo) {
         Image image = photo.getImage();
         ImageView imageView = new ImageView(image);
@@ -175,22 +188,31 @@ public class AlbumView {
         return imageView;
     }
 
+    /* Switches to a different scene */
     private void switchToAlbumListView() {
         this.stage.setScene(this.albumListView.getScene());
     }
 
+    /* Updates the current Tile Pane with an added photo
+    * @param Photo - photo to add
+    * */
     private void updateTilePane(Photo photo) {
         ImageView imageView = createImageView(photo);
         this.tilePane.getChildren().addAll(imageView);
 
     }
 
+    /* Updates tilePane with the elements of another tilePane object*/
     private void update(TilePane tile) {
         this.tilePane.getChildren().setAll(tile.getChildren());
     }
 
+
+    /* All clickHanlder methods for the buttons on the view*/
     private void addClickHandlersToPhotoButtons(Photo photo, ImageView imageView) {
         this.photoView.setPhoto(photo);
+
+        /* Handles the displayButton - shows the photo in a photoView*/
         this.displayButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -204,6 +226,7 @@ public class AlbumView {
                 hideAllImageButtons();
             }
         });
+        /* Handles the addTag Button - shows a popup for user to add a tag as a String*/
         this.addTagButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -220,6 +243,7 @@ public class AlbumView {
                 UserSession.albumList.setAlbums(albumListView.getAlbums());
             }
         });
+        /* Handles the delete Button - deletes a selected photo*/
         this.deleteButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -229,6 +253,7 @@ public class AlbumView {
                 UserSession.albumList.setAlbums(albumListView.getAlbums());
             }
         });
+        /* Handles the caption Button - shows a popup for user to add a caption as a String*/
         this.captionButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -243,13 +268,13 @@ public class AlbumView {
                 UserSession.albumList.setAlbums(albumListView.getAlbums());
             }
         });
-
+        /* Handles the move Button - shows a popup for user to either move or copy a photo into a different album*/
         this.moveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
                 List<String> choices = new ArrayList<String>();
-                for(Album al: UserSession.albumList.getAlbums()){
+                for (Album al : UserSession.albumList.getAlbums()) {
                     choices.add(al.getName());
                 }
 
@@ -265,7 +290,7 @@ public class AlbumView {
                 alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
 
                 Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == buttonTypeOne){
+                if (result.get() == buttonTypeOne) {
 
                     ChoiceDialog<String> dialog = new ChoiceDialog<>("b", choices);
                     dialog.setTitle("Choose Album");
@@ -273,9 +298,9 @@ public class AlbumView {
                     dialog.setContentText("Choose an album:");
 
                     Optional<String> moveResult = dialog.showAndWait();
-                    if (moveResult.isPresent()){
-                       Album albumSelection = UserSession.albumList.getAlbumFromName(moveResult.get());
-                        if(albumSelection!=null){
+                    if (moveResult.isPresent()) {
+                        Album albumSelection = UserSession.albumList.getAlbumFromName(moveResult.get());
+                        if (albumSelection != null) {
                             albumSelection.addPhoto(photo);
 
                             ////NEED IMPLEMENTATION TO REMOVE PHOTO FROM CURRENT TILEPANE BUT SHOW IT SELECTED ALBUM'S
@@ -292,9 +317,9 @@ public class AlbumView {
                     dialog.setContentText("Choose an album:");
 
                     Optional<String> moveResult = dialog.showAndWait();
-                    if (moveResult.isPresent()){
+                    if (moveResult.isPresent()) {
                         Album albumSelection = UserSession.albumList.getAlbumFromName(moveResult.get());
-                        if(albumSelection!=null){
+                        if (albumSelection != null) {
                             albumSelection.addPhoto(photo);
                             UserSession.albumList.setAlbums(albumListView.getAlbums());
                         }
@@ -307,6 +332,7 @@ public class AlbumView {
             }
         });
 
+        /* Handles the search Button - allows user to search through photo with tags*/
         this.searchButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -322,6 +348,7 @@ public class AlbumView {
             }
         });
 
+        /* Handles the clear Button -clears search*/
         this.clearButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -335,15 +362,16 @@ public class AlbumView {
             }
         });
 
+        /* Handles the dateRange Button -search within date Range*/
         this.dateRangeButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 clearButton.fire();
                 TilePane tile = new TilePane();
-                for(Photo photo: photos){
+                for (Photo photo : photos) {
                     LocalDate start = startDate.getValue();
                     LocalDate end = endDate.getValue();
-                    if(photo.getDate().isAfter(start)&&photo.getDate().isBefore(end)){
+                    if (photo.getDate().isAfter(start) && photo.getDate().isBefore(end)) {
                         ImageView imageView = createImageView(photo);
                         tile.getChildren().add(imageView);
                     }
