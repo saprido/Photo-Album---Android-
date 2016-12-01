@@ -100,7 +100,7 @@ public class AlbumView {
         this.photoView = photoView;
         this.stage = stage;
         //this.albumSideListView.setItems(FXCollections.observableArrayList(UserSession.albumList.getAlbums()));
-        this.albumSideListView.setVisible(false);
+        //this.albumSideListView.setVisible(false);
         addClickHandlers();
     }
 

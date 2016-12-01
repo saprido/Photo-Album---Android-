@@ -64,7 +64,7 @@ public class AlbumListView {
         this.albumTextField.setVisible(false);
         this.addAlbumButton.setVisible(false);
 
-        this.albums = UserSession.loadedAlbumList.getAlbums();
+        //this.albums = UserSession.loadedAlbumList.getAlbums();
         this.albumsOL.addAll(this.albums);
         this.albumListView.setItems(albumsOL);
 
